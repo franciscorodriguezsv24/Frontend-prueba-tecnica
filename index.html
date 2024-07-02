@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>API Example</title>
+</head>
+<body>
+    <h1>Menu Items</h1>
+
+    <div id="menuItems"></div>
+
+    <script>
+        fetch('http://localhost:8080/menu')
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+            .then(data => {
+            // Obtenemos la referencia al div donde queremos mostrar los datos
+            const menuItemsDiv = document.getElementById('menuItems');
+
+            // Creamos un elemento ul para la lista de items
+            const ul = document.createElement('ul');
+
+            // Iteramos sobre el array de menuitems y creamos elementos li para cada uno
+            data.menu.popup.menuitem.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.value} - ${item.onclick}`;
+                ul.appendChild(li);
+            });
+
+            // Agregamos la lista ul al div
+            menuItemsDiv.appendChild(ul);
+        })
+            .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    </script>
+</body>
+</html>
